@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cart - VÉRX</title>
+  <style>
+    body {
+      font-family: 'Playfair Display', serif;
+      margin: 0;
+      padding: 40px 20px;
+      background: url('imgfront.avif') no-repeat center center/cover;
+      min-height: 100vh;
+      box-sizing: border-box;
+      color: white;
+    }
+
+    h1 {
+      text-align: center;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+    }
+
+    .cart-item {
+      display: flex;
+      align-items: center;
+      margin: 20px auto;
+      background: rgba(255, 255, 255, 0.15);
+      padding: 15px;
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      width: 90%;
+      max-width: 700px;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: white;
+    }
+
+    .cart-item img {
+      width: 120px;
+      border-radius: 12px;
+      margin-right: 20px;
+    }
+
+    .details {
+      flex: 1;
+    }
+
+    .details h3 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .details p {
+      margin: 6px 0;
+    }
+
+    .remove-btn {
+      background: rgba(255, 0, 0, 0.8);
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .total {
+      text-align: center;
+      font-size: 22px;
+      font-weight: bold;
+      margin-top: 30px;
+      text-shadow: 1px 1px 2px black;
+    }
+
+    .checkout-btn {
+      display: block;
+      margin: 20px auto;
+      padding: 12px 24px;
+      font-size: 18px;
+      background-color: rgba(0, 0, 0, 0.8);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    .checkout-btn:hover {
+      background-color: rgba(0, 0, 0, 1);
+    }
+
+    #cart-container {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Your Cart</h1>
+  <div id="cart-container"></div>
+  <div class="total" id="total-amount"></div>
+  <button class="checkout-btn" onclick="checkout()">Proceed to Checkout</button>
+
+  <script>
+    const cartContainer = document.getElementById("cart-container");
+    const totalAmount = document.getElementById("total-amount");
+
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    function renderCart() {
+      cartContainer.innerHTML = '';
+      let total = 0;
+
+      if (cart.length === 0) {
+        cartContainer.innerHTML = '<p style="text-align:center;">Your cart is empty.</p>';
+        totalAmount.innerText = '';
+        document.querySelector('.checkout-btn').style.display = 'none';
+        return;
+      }
+
+      document.querySelector('.checkout-btn').style.display = 'block';
+
+      cart.forEach((item, index) => {
+        const div = document.createElement("div");
+        div.className = "cart-item";
+        div.innerHTML = `
+          <img src="${item.img}" alt="${item.name}">
+          <div class="details">
+            <h3>${item.name}</h3>
+            <p>Price: $${item.price}</p>
+            <p>Size: ${item.size}</p>
+            <button class="remove-btn" onclick="removeItem(${index})">Remove</button>
+          </div>
+        `;
+        cartContainer.appendChild(div);
+        total += parseFloat(item.price);
+      });
+
+      totalAmount.innerText = `Total: $${total.toFixed(2)}`;
+    }
+
+    function removeItem(index) {
+      cart.splice(index, 1);
+      localStorage.setItem('cart', JSON.stringify(cart));
+      renderCart();
+    }
+
+    // Redirects to payment page and stores cart data in localStorage
+    function checkout() {
+      if (cart.length === 0) {
+        alert("Your cart is empty.");
+        return;
+      }
+
+      // Store cart data in localStorage to pass it to payment page
+      localStorage.setItem('checkoutCart', JSON.stringify(cart));
+
+      // Redirect to payment page
+      window.location.href = 'payment.html';
+    }
+
+    renderCart();
+  </script>
+</body>
+</html>

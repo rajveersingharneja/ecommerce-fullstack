@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>VÉRX</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet"/>
+  <script>
+    function toggleMenu() {
+      document.querySelector(".menu-dropdown").classList.toggle("show");
+    }
+    function closeMenu() {
+      document.querySelector(".menu-dropdown").classList.remove("show");
+    }
+
+    function toggleProfileMenu() {
+      document.getElementById("profileMenu").classList.toggle("show");
+    }
+
+    window.onclick = function (event) {
+      if (!event.target.matches('.profile-dropdown button')) {
+        const dropdowns = document.getElementsByClassName("profile-menu");
+        for (let i = 0; i < dropdowns.length; i++) {
+          dropdowns[i].classList.remove("show");
+        }
+      }
+    };
+
+    let currentImageIndex = 0;
+    const images = ['img1.png', 'img2.png', 'img3.png', 'img4.png'];
+    function changeBackground() {
+      document.querySelector(".hero").style.backgroundImage = `url(${images[currentImageIndex]})`;
+      currentImageIndex = (currentImageIndex + 1) % images.length;
+    }
+    setInterval(changeBackground, 5000);
+
+    // Function to show orders (simple example using localStorage)
+    function showOrders() {
+      const orders = JSON.parse(localStorage.getItem("myOrders")) || [];
+      const ordersSection = document.createElement("div");
+      ordersSection.innerHTML = "<h3>My Orders</h3>";
+      const ordersList = document.createElement("ul");
+
+      if (orders.length === 0) {
+        ordersList.innerHTML = "<li>No orders yet.</li>";
+      } else {
+        orders.forEach(order => {
+          const orderItem = document.createElement("li");
+          orderItem.innerHTML = `Product: ${order.name} | Price: ₹${order.price} | Size: ${order.size}`;
+          ordersList.appendChild(orderItem);
+        });
+      }
+
+      ordersSection.appendChild(ordersList);
+      document.body.appendChild(ordersSection);
+      document.querySelector(".menu-dropdown").classList.remove("show");
+    }
+
+    // Logout function to clear data (simple example)
+    function logout() {
+      localStorage.clear(); // Clear localStorage
+      alert("Logged out successfully.");
+      window.location.href = "login.html"; // Redirect to login page
+    }
+  </script>
+</head>
+<body onload="changeBackground()">
+  <header>
+    <div style="display: flex; align-items: center;">
+      <button class="menu-icon" onclick="toggleMenu()">☰</button>
+      <h1 class="logo">VÉRX</h1>
+      
+    </div>
+     <script>
+    function changeBackground() {
+  const images = [
+    "imgfront.avif",
+    "front2.webp",
+    "front3.jpg",
+    "front4.jpg"
+  ];
+  let index = 0;
+
+  // Initial background
+  document.body.style.backgroundImage = `url('${images[index]}')`;
+
+  // Change background every 4 seconds
+  setInterval(() => {
+    index = (index + 1) % images.length;
+    document.body.style.backgroundImage = `url('${images[index]}')`;
+  }, 4000);
+}
+
+  </script>
+
+    <div class="header-right">
+      <nav class="header-links">
+        <a href="#">Search</a>
+       
+        <a href="help.html">Help</a>
+      </nav>
+      <div class="profile-dropdown">
+        <button onclick="toggleProfileMenu()">👤</button>
+        <div class="profile-menu" id="profileMenu">
+            <a href="myorders.html" style="color: rgb(12, 10, 10); text-decoration: none;">My Orders</a>
+
+          <a href="cart.html">Cart</a>
+          <a href="#" onclick="logout()">Logout</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <nav class="menu-dropdown">
+    <div class="menu-header">
+      <span>Menu</span>
+      <span class="close-btn" onclick="closeMenu()">✖</span>
+    </div>
+    <div class="categories">
+      <span><a href="women-dresses.html">Women</a></span>
+      <span><a href="women-dresses.html">Men</a></span>
+    </div>
+    <div class="options">
+      <ul>
+        <li><a href="women-dresses.html">Dresses</a></li>
+        <li><a href="women-tops.html">Tops</a></li>
+        <li><a href="women-bottoms.html">Bottoms</a></li>
+        <li><a href="women-accessories.html">Accessories</a></li>
+      </ul>
+      <ul>
+        <li>Shirts</li>
+        <li>Pants</li>
+        <li>Shoes</li>
+        <li>Accessories</li>
+      </ul>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <h2>New Collection</h2>
+    <p>Explore the latest trends</p>
+    <button>Shop Now</button>
+  </section>
+
+  <footer>
+    &copy; 2025 HMU Fashion Store
+  </footer>
+</body>
+</html>

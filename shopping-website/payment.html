@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Payment - VÉRX</title>
+    <style>
+        body {
+            font-family: 'Playfair Display', serif;
+            margin: 0;
+            padding: 40px 20px;
+            background: url('imgfront.avif') no-repeat center center/cover;
+            min-height: 100vh;
+            box-sizing: border-box;
+            color: white;
+        }
+
+        h1 {
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+        }
+
+        .payment-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .payment-details {
+            margin-bottom: 20px;
+        }
+
+        .payment-details p {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+
+        .payment-btn {
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 12px 24px;
+            font-size: 18px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            display: block;
+            margin: 0 auto;
+            transition: 0.3s ease;
+        }
+
+        .payment-btn:hover {
+            background-color: rgba(0, 0, 0, 1);
+        }
+
+        .message {
+            text-align: center;
+            font-size: 18px;
+            color: #ff9900;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Payment Page</h1>
+    <div class="payment-container">
+        <div class="payment-details">
+            <h3>Order Summary</h3>
+            <div id="order-details"></div>
+            <div id="order-total"></div>
+        </div>
+        <button class="payment-btn" onclick="processPayment()">Complete Payment</button>
+    </div>
+
+    <div class="message" id="payment-message"></div>
+
+    <script>
+        const orderDetails = document.getElementById("order-details");
+        const orderTotal = document.getElementById("order-total");
+        const paymentMessage = document.getElementById("payment-message");
+    
+        const cart = JSON.parse(localStorage.getItem('checkoutCart')) || [];
+    
+        let totalAmount = 0;
+        let orderSummary = '';
+    
+        cart.forEach(item => {
+            orderSummary += `<p>${item.name} - $${item.price} x ${item.size}</p>`;
+            totalAmount += parseFloat(item.price);
+        });
+    
+        orderDetails.innerHTML = orderSummary;
+        orderTotal.innerHTML = `<h4>Total: $${totalAmount.toFixed(2)}</h4>`;
+    
+        async function processPayment() {
+            try {
+                const response = await fetch('http://localhost:3000/payment', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ cart, totalAmount }),
+                });
+    
+                const data = await response.json();
+    
+                if (response.ok) {
+                    paymentMessage.textContent = "✅ Payment successful! Your order has been placed.";
+    
+                    // Save to localStorage under "myOrders"
+                    const completedOrders = JSON.parse(localStorage.getItem("myOrders")) || [];
+    
+                    cart.forEach(item => {
+                        completedOrders.push({
+                            name: item.name,
+                            price: item.price,
+                            size: item.size
+                        });
+                    });
+    
+                    localStorage.setItem("myOrders", JSON.stringify(completedOrders));
+    
+                    // Clear checkoutCart
+                    localStorage.removeItem("checkoutCart");
+    
+                    // Redirect to index page
+                    setTimeout(() => {
+                        window.location.href = "index.html";
+                    }, 2000);
+                } else {
+                    paymentMessage.textContent = "❌ Failed to save order";
+                }
+            } catch (err) {
+                console.error("❌ Error processing payment:", err);
+                paymentMessage.textContent = "❌ Payment error occurred!";
+            }
+        }
+        // Save payment record
+let paymentHistory = JSON.parse(localStorage.getItem("paymentHistory")) || [];
+paymentHistory.push({ items: cart, totalAmount });
+localStorage.setItem("paymentHistory", JSON.stringify(paymentHistory));
+
+    </script>
+           
+    
+    
+</body>
+
+</html>

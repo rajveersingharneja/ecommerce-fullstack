@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VÉRX</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="women-dresses.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <script>
+        function toggleMenu() {
+            document.querySelector(".menu-dropdown").classList.toggle("show");
+        }
+        function closeMenu() {
+            document.querySelector(".menu-dropdown").classList.remove("show");
+        }
+
+        let currentImageIndex = 0;
+        const images = [
+            'frontdress001.png', 
+     
+            'womendressfront2.webp',
+            'womenfront4.jpeg'
+        ];
+        function changeBackground() {
+            document.querySelector(".hero").style.backgroundImage = `url(${images[currentImageIndex]})`;
+            currentImageIndex = (currentImageIndex + 1) % images.length;
+        }
+        setInterval(changeBackground, 5000);
+    </script>
+    <style>
+        body {
+            font-family: 'Playfair Display', serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 20px;
+            background-color: white;
+            position: relative;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .menu-icon {
+            font-size: 36px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        .logo {
+            font-size: 50px;
+            font-weight: bold;
+            margin: 0;
+            flex-grow: 1;
+            text-align: left;
+            letter-spacing: -3px;
+        }
+        .menu-dropdown {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 300px;
+            height: 100vh;
+            background-color: white;
+            box-shadow: 4px 0px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            transition: all 0.3s ease-in-out;
+        }
+        .menu-dropdown.show {
+            display: block;
+        }
+        .menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 20px;
+            font-weight: bold;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        .menu-header .close-btn {
+            font-size: 24px;
+            cursor: pointer;
+        }
+        .categories {
+            display: flex;
+            justify-content: space-between;
+            font-size: 18px;
+            font-weight: bold;
+            padding: 15px 0;
+        }
+        .options ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .options ul li {
+            padding: 10px 0;
+            font-size: 16px;
+        }
+        .hero {
+            text-align: center;
+            padding: 100px;
+            background-size: cover;
+            background-position: center;
+            transition: background-image 1s ease-in-out;
+        }
+        .header-links {
+            display: flex;
+            gap: 20px;
+            font-size: 14px;
+        }
+        .header-links a {
+            text-decoration: none;
+            color: black;
+        }
+    </style>
+</head>
+<body onload="changeBackground()">
+    <header>
+        <div style="display: flex; align-items: center;">
+            <button class="menu-icon" onclick="toggleMenu()">☰</button>
+            <h1 class="logo">VÉRX</h1>
+        </div>
+        <nav class="header-links">
+            <a href="#">Search</a>
+            <a href="#">Login</a>
+            <a href="#">Help</a>
+        </nav>
+    </header>
+    <nav class="menu-dropdown">
+        <div class="menu-header">
+            <span>Menu</span>
+            <span class="close-btn" onclick="closeMenu()">✖</span>
+        </div>
+        <div class="categories">
+            <span>Women</span>
+            <span>Men</span>
+            
+        </div>
+        <div class="options">
+            <ul>
+                <li><a href="women-dresses.html">Dresses</a></li>
+                <li><a href="women-tops.html">Tops</a></li>
+                <li><a href="women-bottoms.html">Bottoms</a></li>
+                <li><a href="women-accessories.html">Accessories</a></li>
+            </ul>
+            <ul>
+                <li>Shirts</li>
+                <li>Pants</li>
+                <li>Shoes</li>
+                <li>Accessories</li>
+            </ul>
+           
+        </div>
+    </nav>
+
+    <section class="hero">
+        <h2>New Collection</h2>
+        <p>Explore the latest trends</p>
+        <button>Shop Now</button>
+    </section>
+
+    <div class="slider-container">
+        <div class="slide">
+            <div class="image-wrapper">
+                <button class="arrow left" onclick="switchImage(0, -1)">❮</button>
+                <img src="womendress1.webp" alt="Front View" class="rectangular-image" style="opacity: 1;">
+                <img src="womendress111.jpeg" alt="Back View" class="rectangular-image" style="opacity: 0; position: absolute; top: 0; left: 0;">
+                <button class="arrow right" onclick="switchImage(0, 1)">❯</button>
+            </div>
+            <div class="info">
+                Elegant Black Dress<br>
+                $150<br>
+                <select class="size-select">
+                    <option>Select Size</option>
+                    <option>S</option>
+                    <option>M</option>
+                    <option>L</option>
+                    <option>XL</option>
+                </select>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="image-wrapper">
+                <button class="arrow left" onclick="switchImage(1, -1)">❮</button>
+                <img src="images/red-dress-front.jpg" alt="Front View" class="rectangular-image" style="opacity: 1;">
+                <img src="images/red-dress-back.jpg" alt="Back View" class="rectangular-image" style="opacity: 0; position: absolute; top: 0; left: 0;">
+                <button class="arrow right" onclick="switchImage(1, 1)">❯</button>
+            </div>
+
+            <div class="info">
+                Classic Red Dress<br>
+                $180<br>
+                <select class="size-select">
+                    <option>Select Size</option>
+                    <option>S</option>
+                    <option>M</option>
+                    <option>L</option>
+                    <option>XL</option>
+                </select>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2025 HMU Fashion Store
+    </footer>
+
+    <script>
+        document.querySelectorAll('.add-to-cart').forEach((btn, index) => {
+            btn.addEventListener('click', () => {
+                const slide = btn.closest('.slide');
+                const img = slide.querySelector('img').src;
+                const name = slide.querySelector('.info').childNodes[0].textContent.trim();
+                const price = slide.querySelector('.info').childNodes[2].textContent.trim().replace('$', '');
+                const size = slide.querySelector('.size-select').value;
+
+                if (size === "Select Size") {
+                    alert("Please select a size.");
+                    return;
+                }
+
+                const product = {
+                    img,
+                    name,
+                    price: parseFloat(price),
+                    size
+                };
+
+                let cart = JSON.parse(localStorage.getItem('cart')) || [];
+                cart.push(product);
+                localStorage.setItem('cart', JSON.stringify(cart));
+                window.location.href = "cart.html";
+            });
+        });
+    </script>
+</body>
+</html>

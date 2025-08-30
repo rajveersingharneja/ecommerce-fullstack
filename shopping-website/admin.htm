@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Panel - VÉRX</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet"/>
+  <style>
+    body {
+      font-family: 'Playfair Display', serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f5f5f5;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    .admin-section {
+      background: white;
+      padding: 20px;
+      margin: 20px auto;
+      max-width: 800px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      color: #222;
+      margin-bottom: 10px;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 5px;
+    }
+    ul {
+      list-style-type: none;
+      padding-left: 0;
+    }
+    li {
+      padding: 8px 0;
+      border-bottom: 1px solid #eee;
+    }
+  </style>
+</head>
+<body>
+  <h1>Admin Dashboard</h1>
+
+  <div class="admin-section">
+    <h2>Logged In Users</h2>
+    <ul id="userList">
+      <!-- Users will be added here -->
+    </ul>
+  </div>
+
+  <div class="admin-section">
+    <h2>Orders</h2>
+    <ul id="orderList">
+      <!-- Orders will be added here -->
+    </ul>
+  </div>
+
+  <div class="admin-section">
+    <h2>Payments</h2>
+    <ul id="paymentList">
+      <!-- Payments will be added here -->
+    </ul>
+  </div>
+
+  <script>
+    // Example: Save login details to localStorage during login
+    const users = JSON.parse(localStorage.getItem("loggedInUsers")) || [];
+    const orders = JSON.parse(localStorage.getItem("myOrders")) || [];
+    const payments = JSON.parse(localStorage.getItem("paymentHistory")) || [];
+
+    const userList = document.getElementById("userList");
+    const orderList = document.getElementById("orderList");
+    const paymentList = document.getElementById("paymentList");
+
+    if (users.length === 0) {
+      userList.innerHTML = "<li>No users have logged in yet.</li>";
+    } else {
+      users.forEach(user => {
+        userList.innerHTML += `<li> Phone: ${user.phone}</li>`;
+      });
+    }
+
+    if (orders.length === 0) {
+      orderList.innerHTML = "<li>No orders placed yet.</li>";
+    } else {
+      orders.forEach(order => {
+        orderList.innerHTML += `<li> ${order.name} - ₹${order.price} - Size: ${order.size}</li>`;
+      });
+    }
+
+    if (payments.length === 0) {
+      paymentList.innerHTML = "<li>No payments recorded yet.</li>";
+    } else {
+      payments.forEach((payment, index) => {
+        paymentList.innerHTML += `<li> Payment #${index + 1} - ₹${payment.totalAmount} for ${payment.items.length} item(s)</li>`;
+      });
+    }
+    window.addEventListener('storage', (e) => {
+        if (e.key === 'loggedInUsers' || e.key === 'myOrders' || e.key === 'paymentHistory') {
+          location.reload(); // Refresh page when localStorage changes
+        }
+      });
+      window.addEventListener('storage', (e) => {
+        if (['loggedInUsers', 'myOrders', 'paymentHistory', 'lastPaymentUpdate'].includes(e.key)) {
+          location.reload(); // Refresh page when localStorage changes
+        }
+      });
+      
+  </script>
+</body>
+</html>

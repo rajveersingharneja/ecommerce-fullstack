@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>My Orders - VÉRX</title>
+  <style>
+    body {
+      font-family: 'Playfair Display', serif;
+      background: url('imgfront.avif') no-repeat center center/cover;
+      margin: 0;
+      padding: 40px 20px;
+      color: white;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.6);
+    }
+
+    .orders-container {
+      max-width: 700px;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.15);
+      padding: 25px;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .order {
+      padding: 15px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .order:last-child {
+      border-bottom: none;
+    }
+
+    .order p {
+      margin: 6px 0;
+      font-size: 18px;
+    }
+
+    .no-orders {
+      text-align: center;
+      font-size: 20px;
+      color: #ffc107;
+    }
+  </style>
+</head>
+<body>
+  <h1>My Orders</h1>
+  <div class="orders-container" id="orders-list"></div>
+
+  <script>
+    const ordersList = document.getElementById("orders-list");
+    let orders = JSON.parse(localStorage.getItem("myOrders")) || [];
+  
+    function renderOrders() {
+      ordersList.innerHTML = "";
+  
+      if (orders.length === 0) {
+        ordersList.innerHTML = `<div class="no-orders">No orders found.</div>`;
+      } else {
+        orders.forEach((order, index) => {
+          const orderDiv = document.createElement("div");
+          orderDiv.classList.add("order");
+          orderDiv.innerHTML = `
+            <p><strong>Order #${index + 1}</strong></p>
+            <p>Name: ${order.name}</p>
+            <p>Price: $${order.price}</p>
+            <p>Size: ${order.size}</p>
+            <button onclick="removeOrder(${index})" style="
+              margin-top: 10px;
+              padding: 8px 14px;
+              background-color: crimson;
+              color: white;
+              border: none;
+              border-radius: 6px;
+              cursor: pointer;
+            ">Remove</button>
+          `;
+          ordersList.appendChild(orderDiv);
+        });
+      }
+    }
+  
+    function removeOrder(index) {
+      orders.splice(index, 1);
+      localStorage.setItem("myOrders", JSON.stringify(orders));
+      renderOrders();
+    }
+  
+    renderOrders();
+  </script>
+</body>
+</html>
